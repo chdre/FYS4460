@@ -1,6 +1,4 @@
 import matplotlib.pyplot as plt
-import pandas as pd
-import scipy.stats as stats
 import numpy as np
 import sys
 from read_lmp_dump import read_file
@@ -11,40 +9,46 @@ def f(v, T):
         np.exp(-v**2 / (2 * T))
 
 
-def plot_histogram(v, v_arr, no_tsteps, no_atoms, T=2.5):
+def plot_histogram(v, v_arr, no_tsteps, no_atoms, no_bins, T=2.5):
     for i in range(0, no_tsteps, no_tsteps // 6):
-        plt.hist(v_arr[i, :], bins=40, density=True)
+        plt.hist(v_arr[i, :], bins=no_bins, density=True)
         plt.plot(v_arr[i, :], f(v_arr[i, :], T))
-        plt.title('Time: %0.1f' % (i / 100))
+        plt.title('Time: %0.1f' % (i / 1000))
         plt.show()
 
     v = np.sort(v)
 
-    plt.hist(v, bins=500, density=True)
+    plt.hist(v, bins=no_bins, density=True)
     plt.plot(v, f(v, T))
     plt.show()
 
 
-def histogram_time_evo(v, v_arr):
+def histogram_time_evo(v, v_arr, no_bins):
     hist_list = []
-    hist_last = plt.hist(v_arr[-1, :], bins=40)
-    hist_last2 = np.sum(hist_last[0] * hist_last[0])
+    hist_last = np.histogram(v_arr[-1, :], bins=no_bins)[0]
+    hist_last2 = np.sum(hist_last * hist_last)
 
-    for i in range(len(v_arr[:, 0])):
-        hist_list.append(plt.hist(v_arr[i, :], bins=40))
-        h = plt.hist(v_arr[i, :], bins=40)
-        hh = np.sum(h[0] * hist_last[0])
+    t_steps = len(v_arr[:, 0])
+
+    for i in range(t_steps):
+        h = np.histogram(v_arr[i, :], bins=no_bins)[0]
+        hh = np.sum(h * hist_last)
         hist_list.append(hh / hist_last2)
 
-    for i in range():
-        plt.plot(hist_list[i])
+    x = np.linspace(0, 1, t_steps)
+
+    plt.plot(x, hist_list, label='Hist. values')
+    plt.plot(x, np.ones(t_steps), '--', label='Theoretical')
+    plt.legend(loc='best')
+    plt.xlabel('Time t')
+    plt.ylabel('Histogram values')
     plt.show()
 
 
 def main():
     if len(sys.argv) < 4:
         print('State 1) filename from which to read data 2) number of timesteps and 3) number of atoms')
-        print('E.g. 1) dump.velocities 2) 100 3) 4000')
+        print('E.g. 1) dump.velocities 2) 1000 3) 4000')
         exit()
 
     filename = sys.argv[1]
@@ -61,8 +65,8 @@ def main():
     for i in range(no_tsteps):
         v_arr[i, :] = np.sort(v[i * (no_atoms - 1):(i + 1) * (no_atoms - 1)])
 
-    # plot_histogram(v, v_arr, no_tsteps, no_atoms)
-    histogram_time_evo(v, v_arr)
+    plot_histogram(v, v_arr, no_tsteps, no_atoms, 40, T=2.5)
+    histogram_time_evo(v, v_arr, 40)
 
 
 if __name__ == '__main__':
