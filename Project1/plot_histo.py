@@ -60,10 +60,10 @@ def main():
     v = df[['vx', 'vy', 'vz']].to_numpy()
     v = np.sqrt(v[:, 0] * v[:, 0] + v[:, 1] * v[:, 1] + v[:, 2] * v[:, 2])
 
-    v_arr = np.zeros((no_tsteps, no_atoms - 1))
+    v_arr = np.zeros((no_tsteps, no_atoms))
 
     for i in range(no_tsteps):
-        v_arr[i, :] = np.sort(v[i * (no_atoms - 1):(i + 1) * (no_atoms - 1)])
+        v_arr[i, :] = np.sort(v[i * (no_atoms):(i + 1) * no_atoms])
 
     plot_histogram(v, v_arr, no_tsteps, no_atoms, 40, T=2.5)
     histogram_time_evo(v, v_arr, 40)
