@@ -70,13 +70,10 @@ def temperature(df):
         plt.show()
 
 
-
-
-
 def main():
-    df = read_file('dump.energy_b_0.001')
+    # df = read_file('dump.energy_b_0.001')
     # total_energy(df)
-    temperature(df)
+    # temperature(df)
 
     df_log = read_log()
     temperature(df_log)
