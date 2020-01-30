@@ -49,9 +49,9 @@ def read_file(filename,
 
         for i in range(len(lines)):
             elms = lines[i].split(' ')
-
-            data_dict = dict((k, elms[col_titles.index(k)])
-                             for k in col_titles)
+            
+            data_dict = dict((j, elms[col_titles.index(j)])
+                             for j in col_titles)
             dict_list.append(data_dict)
 
     dataframe = pd.DataFrame(dict_list, columns=col_titles, dtype=np.float)

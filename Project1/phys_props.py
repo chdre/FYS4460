@@ -2,6 +2,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import sys
 from read_lmp_dump import read_file
+from read_lmp_log import read_log
 
 
 def total_energy(df):
@@ -32,7 +33,7 @@ def total_energy(df):
     plt.show()
 
 
-def temperature(df):
+def temperature_(df):
     Ek = df[['c_Ek']].to_numpy()
 
     no_tsteps = 2000
@@ -56,10 +57,29 @@ def temperature(df):
     plt.show()
 
 
+def temperature(df):
+    for i in range(len(df)):
+        # Each timestep
+        dataframe = df[i]
+        T = dataframe[['Temp']].to_numpy()
+
+        T_avg = np.sum(T) / len(T)
+        print(f'Average temperature: {T_avg}')
+
+        plt.plot(T)
+        plt.show()
+
+
+
+
+
 def main():
-    df = read_file('dump.energy_b')
+    df = read_file('dump.energy_b_0.001')
     # total_energy(df)
-    # temperature(df)
+    temperature(df)
+
+    df_log = read_log()
+    temperature(df_log)
 
 
 if __name__ == '__main__':
