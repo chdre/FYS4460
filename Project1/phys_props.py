@@ -135,8 +135,8 @@ def main():
     df_log = read_log()
     # temperature(df_log)
     # energy(df_log)
-    # P, T = pressure(df_log)
-    P, rho = density(df_log, plot=True)
+    P, T = pressure(df_log, plot=True)
+    # P, rho = density(df_log, plot=True)
 
 
 if __name__ == '__main__':

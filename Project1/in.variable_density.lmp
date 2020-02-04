@@ -28,6 +28,7 @@ thermo 100
 thermo_style custom step temp etotal press density
 run 20000
 
+# A log file for each T
 log log.variable_density_T${T}.lammps
 
 clear
