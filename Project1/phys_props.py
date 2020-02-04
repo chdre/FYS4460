@@ -62,24 +62,39 @@ def temperature(df):
         # Each timestep
         dataframe = df[i]
         T = dataframe[['Temp']].to_numpy()
+        dt = dataframe[['Dt']].to_numpy()[0]
+
+        T = T[int(0.3 * len(T))]    # System i equilibrium
 
         T_avg = np.sum(T) / len(T)
         print(f'Average temperature: {T_avg}')
 
-        plt.plot(T)
+        plt.plot(T, label=dt)
+        plt.title('Temperature')
+        plt.xlabel('Time t')
+        plt.ylabel('Temerature')
+        plt.legend()
+        plt.show()
+
+def energy(df):
+    for i in range(len(df)):
+        # Each timestep
+        dataframe = df[i]
+        E = dataframe[['TotEng']].to_numpy()
+        dt = dataframe[['Dt']].to_numpy()[0]
+
+        plt.plot(E, label=str(dt))
+        plt.title('Energy')
+        plt.xlabel('Time t')
+        plt.ylabel('Energy')
+        plt.legend()
         plt.show()
 
 
-
-
-
 def main():
-    df = read_file('dump.energy_b_0.001')
-    # total_energy(df)
-    temperature(df)
-
     df_log = read_log()
     temperature(df_log)
+    energy(df_log)
 
 
 if __name__ == '__main__':

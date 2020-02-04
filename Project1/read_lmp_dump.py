@@ -5,8 +5,7 @@ import pandas as pd
 import re
 
 
-def read_file(filename,
-              write_to_file=False):
+def read_file(filename):
     """
     Stores data and sorts.
     """
@@ -31,16 +30,8 @@ def read_file(filename,
     # Creating dictionary with empty list as values
     data_dict = dict.fromkeys(col_titles, [])
 
-    idx_end_num_data = []
-    idx_start_num_data = []
-
-    for match in re.finditer('ITEM: TIMESTEP', data[1:]):
-        start_idx = match.start()   # Not counting the previous space
-        idx_end_num_data.append(start_idx)
-
-    for match in re.finditer(col_titles[-1], data):
-        end_idx = match.end() + 2   # Not counting space and \n
-        idx_start_num_data.append(end_idx)
+    idx_end_num_data = [match.start() for match in re.finditer('ITEM: TIMESTEP', data[1:])]
+    idx_start_num_data = [match.end + 2 for match in re.findter(col_titles[-1], data)]
     idx_end_num_data.append(-1)  # Including end
 
     for k in range(len(idx_start_num_data)):
@@ -49,17 +40,12 @@ def read_file(filename,
 
         for i in range(len(lines)):
             elms = lines[i].split(' ')
-            
+
             data_dict = dict((j, elms[col_titles.index(j)])
                              for j in col_titles)
             dict_list.append(data_dict)
 
     dataframe = pd.DataFrame(dict_list, columns=col_titles, dtype=np.float)
-
-    if write_to_file:
-        with open(filename + '_dataframe.txt', 'w') as tfile:
-            tfile.write(dataframe.to_string(header=True, index=False))
-        tfile.close()
 
     return dataframe
 
