@@ -2,7 +2,7 @@
 
 label tloop
 
-variable dt index 0.010 0.001
+variable dt index 0.01000 0.00100 0.00010 0.00001
 
 timestep ${dt}
 
@@ -28,8 +28,9 @@ compute Ep all pe/atom
 compute Ek all ke/atom
 
 dump 1 all custom 100 dump.energy_b_${dt} id type c_Ep c_Ek
-# timestep 0.0001
+timestep ${dt}
 thermo 100
+thermo_style custom step dt temp etotal press
 run 20000
 
 clear
