@@ -1,5 +1,4 @@
 #3d Lennard
-
 label tloop
 
 variable T index 1 2 2.5 3 3.5 6 9 10 15
@@ -27,7 +26,7 @@ fix f all nve
 compute Ep all pe/atom
 compute Ek all ke/atom
 
-dump 1 all custom 100 dump.PofT_${T} id type c_Ep c_Ek
+# dump 1 all custom 100 dump.PofT_${T} id type c_Ep c_Ek
 thermo 100
 thermo_style custom step dt temp etotal press
 run 20000
