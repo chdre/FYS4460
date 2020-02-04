@@ -65,30 +65,18 @@ def temperature(df):
         T = dataframe[['Temp']].to_numpy()
         dt = dataframe[['Dt']].to_numpy()[0]
 
-        T = T[int(0.3 * len(T))]    # System i equilibrium
+        T = T[int(0.3 * len(T)):]    # System i equilibrium
 
         T_avg = np.sum(T) / len(T)
         print(f'Average temperature: {T_avg}')
 
-<<<<<<< HEAD
-        plt.plot(T)
-        plt.xlabel('Timesteps')
-        plt.ylabel('Temperature')
-        plt.show()
-
-
-def main():
-    # df = read_file('dump.energy_b_0.001')
-    # total_energy(df)
-    # temperature(df)
-
-=======
-        plt.plot(T, label=dt)
+        plt.plot(T, label='dt=' + str(dt[0]))
         plt.title('Temperature')
         plt.xlabel('Time t')
         plt.ylabel('Temerature')
         plt.legend()
         plt.show()
+
 
 def energy(df):
     for i in range(len(df)):
@@ -97,19 +85,35 @@ def energy(df):
         E = dataframe[['TotEng']].to_numpy()
         dt = dataframe[['Dt']].to_numpy()[0]
 
-        plt.plot(E, label=str(dt))
-        plt.title('Energy')
-        plt.xlabel('Time t')
+        plt.plot(E, label='dt=' + str(dt[0]))
+        plt.xlabel('Timesteps')
         plt.ylabel('Energy')
         plt.legend()
         plt.show()
 
 
+def pressure(df):
+    P = np.zeros(len(df))
+    T = np.zeros_like(P)
+
+    for i in range(len(df)):
+        # Each temperature
+        dataframe = df[i]
+        P[i] = np.average(dataframe[['Press']].to_numpy())
+        T[i] = dataframe[['Temp']].to_numpy()[0]
+
+    plt.plot(T, P, '-o')
+    plt.xlabel('Temperature')
+    plt.ylabel('Pressure')
+    # plt.legend()
+    plt.show()
+
+
 def main():
->>>>>>> 9a303a709952849739df6c61a122a84da97949c4
     df_log = read_log()
-    temperature(df_log)
-    energy(df_log)
+    # temperature(df_log)
+    # energy(df_log)
+    pressure(df_log)
 
 
 if __name__ == '__main__':
