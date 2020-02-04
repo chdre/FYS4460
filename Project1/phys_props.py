@@ -92,7 +92,7 @@ def energy(df):
         plt.show()
 
 
-def pressure(df):
+def pressure(df, plot=False):
     P = np.zeros(len(df))
     T = np.zeros_like(P)
 
@@ -102,18 +102,41 @@ def pressure(df):
         P[i] = np.average(dataframe[['Press']].to_numpy())
         T[i] = dataframe[['Temp']].to_numpy()[0]
 
-    plt.plot(T, P, '-o')
-    plt.xlabel('Temperature')
-    plt.ylabel('Pressure')
-    # plt.legend()
-    plt.show()
+    if plot:
+        plt.plot(T, P, '-o')
+        plt.xlabel('Temperature')
+        plt.ylabel('Pressure')
+        plt.show()
+
+    return P, T
+
+
+def density(df, plot=False):
+    P = np.zeros(len(df))
+    rho = np.zeros_like(P)
+    T = np.zeros_like(P)
+
+    for i in range(len(df)):
+        # Each temperature
+        dataframe = df[i]
+        P[i] = np.sum(dataframe[['Press']].to_numpy())
+        rho[i] = dataframe[['Density']].to_numpy()[0]
+
+    if plot:
+        plt.plot(rho, P, '-o')
+        plt.xlabel('Density')
+        plt.ylabel('Pressure')
+        plt.show()
+
+    return P, rho
 
 
 def main():
     df_log = read_log()
     # temperature(df_log)
     # energy(df_log)
-    pressure(df_log)
+    # P, T = pressure(df_log)
+    P, rho = density(df_log, plot=True)
 
 
 if __name__ == '__main__':
