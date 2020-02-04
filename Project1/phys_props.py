@@ -54,6 +54,7 @@ def temperature_(df):
     print(f'Average temperature: {T_avg}')
 
     plt.plot(T)
+
     plt.show()
 
 
@@ -67,6 +68,8 @@ def temperature(df):
         print(f'Average temperature: {T_avg}')
 
         plt.plot(T)
+        plt.xlabel('Timesteps')
+        plt.ylabel('Temperature')
         plt.show()
 
 
