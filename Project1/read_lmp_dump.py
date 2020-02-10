@@ -30,8 +30,10 @@ def read_file(filename):
     # Creating dictionary with empty list as values
     data_dict = dict.fromkeys(col_titles, [])
 
-    idx_end_num_data = [match.start() for match in re.finditer('ITEM: TIMESTEP', data[1:])]
-    idx_start_num_data = [match.end + 2 for match in re.findter(col_titles[-1], data)]
+    idx_end_num_data = [match.start()
+                        for match in re.finditer('ITEM: TIMESTEP', data[1:])]
+    idx_start_num_data = [match.end() + 2
+                          for match in re.finditer(col_titles[-1], data)]
     idx_end_num_data.append(-1)  # Including end
 
     for k in range(len(idx_start_num_data)):
