@@ -1,4 +1,5 @@
 import matplotlib.pyplot as plt
+from mpl_toolkits import mplot3d
 import numpy as np
 import sys
 from read_lmp_dump import read_file
@@ -93,14 +94,12 @@ def energy(df):
 
 
 def pressure(df, plot=False):
-    P = np.zeros(len(df))
-    T = np.zeros_like(P)
-
     for i in range(len(df)):
-        # Each temperature
         dataframe = df[i]
-        P[i] = np.average(dataframe[['Press']].to_numpy())
-        T[i] = dataframe[['Temp']].to_numpy()[0]
+        P = dataframe[['Press']].to_numpy()
+        T = dataframe[['Temp']].to_numpy()
+
+    T, P = zip(*sorted(zip(T, P)))
 
     if plot:
         plt.plot(T, P, '-o')
@@ -108,35 +107,56 @@ def pressure(df, plot=False):
         plt.ylabel('Pressure')
         plt.show()
 
-    return P, T
-
 
 def density(df, plot=False):
-    P = np.zeros(len(df))
-    rho = np.zeros_like(P)
-    T = np.zeros_like(P)
-
     for i in range(len(df)):
-        # Each temperature
         dataframe = df[i]
-        P[i] = np.sum(dataframe[['Press']].to_numpy())
-        rho[i] = dataframe[['Density']].to_numpy()[0]
+        P = dataframe[['Press']].to_numpy()[:, 0]
+        rho = dataframe[['Density']].to_numpy()[:, 0]
+        T = dataframe[['Temp']].to_numpy()[:, 0]
+
+    T, P, rho = zip(*sorted(zip(T, P, rho)))
 
     if plot:
-        plt.plot(rho, P, '-o')
-        plt.xlabel('Density')
-        plt.ylabel('Pressure')
+        fig = plt.figure()
+        ax = plt.axes(projection='3d')
+        ax.plot3D(T, rho, P)
+
         plt.show()
 
-    return P, rho
+
+def displacement(df):
+    id = df[['id']].to_numpy()
+    x = df[['x']].to_numpy()
+    y = df[['y']].to_numpy()
+    z = df[['z']].to_numpy()
+
+    r = np.sqrt(x * x + y * y + z * z)
+
+    no_tsteps = 201
+    no_atoms = 4000
+
+    id = id.reshape(no_atoms, no_tsteps)
+    print(np.sort(id[:, 2])[:20])
+    exit()
+    r = r.reshape(no_atoms, no_tsteps)
+    # x = x.reshape(no_atoms, no_tsteps)
+    # y = y.reshape(no_atoms, no_tsteps)
+    # z = z.reshape(no_atoms, no_tsteps)
+
+    for i in range(no_tsteps):
+        # Sorting by atom number for all timesteps
+        id[:, i], r[:, i] = zip(*sorted(zip(id[:, i], r[:, i])))
+        print(id[:10, i])
 
 
 def main():
-    df_log = read_log()
+    # df_log = read_log()
     # temperature(df_log)
     # energy(df_log)
-    P, T = pressure(df_log, plot=True)
-    # P, rho = density(df_log, plot=True)
+    # pressure(df_log, plot=True)
+    # density(df_log, plot=True)
+    displacement(read_file('dump.displacement'))
 
 
 if __name__ == '__main__':
