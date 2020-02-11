@@ -22,6 +22,14 @@ def read_file(filename):
     idx_itm_atm = data.find(str_itm_atm) + len(str_itm_atm) + 1
     idx_end_cols = data.find('\n', idx_itm_atm) - 1
 
+    if '[' in data[idx_itm_atm: idx_end_cols]:
+        # If Lammps dump file contains [] from printing an array, it must be
+        # removed such that finditer can find proper indices. See below.
+        data = data.replace('[', '')
+        data = data.replace(']', '')
+        idx_itm_atm = data.find(str_itm_atm) + len(str_itm_atm) + 1
+        idx_end_cols = data.find('\n', idx_itm_atm) - 1
+
     # Column names of dataframe
     col_titles = data[idx_itm_atm: idx_end_cols].split(' ')
 

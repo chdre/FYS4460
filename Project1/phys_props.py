@@ -126,28 +126,35 @@ def density(df, plot=False):
 
 
 def displacement(df):
-    id = df[['id']].to_numpy()
-    x = df[['x']].to_numpy()
-    y = df[['y']].to_numpy()
-    z = df[['z']].to_numpy()
+    D = []
+    msd = []
+    T = []
 
-    r = np.sqrt(x * x + y * y + z * z)
+    steps = df[0][['Step']].to_numpy(dtype=np.int)[:, 0]
+    t = np.linspace(steps[0], steps[-1] * 0.005, steps.shape[0])
 
-    no_tsteps = 201
-    no_atoms = 4000
+    for temp in range(len(df)):
+        dataframe = df[temp]
+        T.append(dataframe[['Temp']].to_numpy()[0, 0])
+        msd.append(dataframe[['c_msd[4]']].to_numpy()[:, 0])
+        D.append(msd[temp] / (6 * t))
 
-    id = id.reshape(no_atoms, no_tsteps)
-    print(np.sort(id[:, 2])[:20])
-    exit()
-    r = r.reshape(no_atoms, no_tsteps)
-    # x = x.reshape(no_atoms, no_tsteps)
-    # y = y.reshape(no_atoms, no_tsteps)
-    # z = z.reshape(no_atoms, no_tsteps)
+    for i in range(len(df)):
+        plt.plot(t, msd[i])
+        plt.xlabel('Time t')
+        plt.ylabel('Mean squared displacement')
+    plt.legend([f'T = {temp}' for temp in T])
+    plt.show()
 
-    for i in range(no_tsteps):
-        # Sorting by atom number for all timesteps
-        id[:, i], r[:, i] = zip(*sorted(zip(id[:, i], r[:, i])))
-        print(id[:10, i])
+    for i in range(len(df)):
+        plt.plot(t, D[i])
+        plt.xlabel('Time t')
+        plt.ylabel('Diffusion constant')
+    plt.legend([f'T={temp}' for temp in T])
+    plt.show()
+
+
+def rdf(df):
 
 
 def main():
@@ -156,7 +163,7 @@ def main():
     # energy(df_log)
     # pressure(df_log, plot=True)
     # density(df_log, plot=True)
-    displacement(read_file('dump.displacement'))
+    displacement(read_log())
 
 
 if __name__ == '__main__':

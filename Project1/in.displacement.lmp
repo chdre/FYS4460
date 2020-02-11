@@ -1,4 +1,8 @@
 #3d Lennard
+label tloop
+
+variable T index 1.0 1.5 2.0 2.5 3.0
+
 units lj
 dimension 3
 boundary p p p
@@ -10,13 +14,21 @@ create_box 1 simbox
 create_atoms 1 box
 
 mass 1 1.0
-velocity all create 2.5 87287 dist uniform
+velocity all create ${T} 87287 dist uniform
 
 pair_style lj/cut 3.0
 pair_coeff 1 1 1.0 1.0 3.0
 
+compute disp all displace/atom  # disp[4] = displacement, disp[1/2/3] = x,y,z
+compute msd all msd
+
 fix f all nve
 
-dump 1 all custom 100 dump.displacement id type x y z
 thermo 100
-run 20000
+thermo_style custom step temp c_msd[4]
+
+run 200000
+
+clear
+next T
+jump SELF tloop

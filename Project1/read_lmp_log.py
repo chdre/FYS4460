@@ -11,16 +11,18 @@ def read_log():
 
     # data = data.split()
 
-    idx_col_titles_start = [match.start() for match in re.finditer('Step', data)]
+    idx_col_titles_start = [match.start()
+                            for match in re.finditer('Step', data)]
     idx_end_num = [match.start() for match in re.finditer('Loop', data)]
 
     datasets = len(idx_col_titles_start)
 
-    idx_col_titles_end = [data.find('\n', idx_col_titles_start[i]) for i in range(datasets)]
+    idx_col_titles_end = [
+        data.find('\n', idx_col_titles_start[i]) for i in range(datasets)]
 
     col_titles = data[idx_col_titles_start[0]: idx_col_titles_end[0]].split()
 
-    dataframe_list = [] # List of dataframe for all timesteps
+    dataframe_list = []  # List of dataframe for all timesteps
 
     for k in range(datasets):
         dict_list = []  # List of dataframe for current timestep
@@ -33,7 +35,8 @@ def read_log():
         for i in range(len(lines)):
             elms = lines[i].split()
 
-            data_dict = dict((j, elms[col_titles.index(j)]) for j in col_titles)
+            data_dict = dict((j, elms[col_titles.index(j)])
+                             for j in col_titles)
 
             dict_list.append(data_dict)
 
@@ -41,8 +44,10 @@ def read_log():
 
         dataframe_list.append(df)
 
-    return dataframe_list
+    if len(dataframe_list) < 2:
+        return dataframe_list[0]
 
+    return dataframe_list
 
 
 def main():
