@@ -155,6 +155,7 @@ def displacement(df):
 
 
 def rdf(df):
+    a = a
 
 
 def main():

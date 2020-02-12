@@ -22,7 +22,11 @@ pair_coeff 1 1 1.0 1.0 3.0
 compute disp all displace/atom  # disp[4] = displacement, disp[1/2/3] = x,y,z
 compute msd all msd
 
+variable D equal slope(c_msd[4])
+
 fix f all nve
+
+# dump 1 all custom 100 dump.displacement id type v_D
 
 thermo 100
 thermo_style custom step temp c_msd[4]
