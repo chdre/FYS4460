@@ -156,8 +156,20 @@ def displacement(df):
     plt.show()
 
 
-def rdf(df):
-    kk = 1
+def rdf(filename):
+    with open(filename, 'r', newline='\n') as f_open:
+        data = f_open.read()
+
+    lines = data.split('\n')
+    lines = lines[105:-1]
+
+    rdf_arr = np.zeros((len(lines), 2))
+
+    for i, line in enumerate(lines):
+        print(line)
+        temp = np.fromstring(line[2:], dtype=float, sep=' ')
+        # print(temp)
+        rdf_arr[i, :] = temp
 
 
 def main():
@@ -167,7 +179,7 @@ def main():
     # pressure(df_log, plot=True)
     # density(df_log, plot=True)
     # displacement()
-    rdf(df)
+    rdf('time_avg_rdf_T0.5.txt')
 
 
 if __name__ == '__main__':
