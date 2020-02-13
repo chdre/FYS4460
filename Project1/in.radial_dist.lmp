@@ -1,34 +1,36 @@
 # 3d Lennard
-# label tloop
+label tloop
 
-# variable T index 1.0 1.5 2.0 2.5 3.0
+variable T index 0.5 2.5 # Solid, liquid
 
 units lj
 dimension 3
 boundary p p p
 atom_style atomic
 
-lattice fcc 0.01
+lattice fcc 1.5
 region simbox block 0 10 0 10 0 10
 create_box 1 simbox
 create_atoms 1 box
 
 mass 1 1.0
-velocity all create 0 87287 dist uniform
+
+velocity all create ${T} 87287 dist uniform
 
 pair_style lj/cut 3.0
 pair_coeff 1 1 1.0 1.0 3.0
 
-# compute RDF all rdf 100
+compute myMSD all msd
 
 fix 1 all nve
 
-dump 1 all custom 100 dump.radial_dist id type x y z vx vy vz
+dump 1 all custom 100 dump.radial_dist_T${T} id type x y z vx vy vz
 thermo 100
-# thermo_style custom step x y z vx vy vz
 
-run 20000
+thermo_style custom step temp press c_myMSD[4]
 
-# clear
-# next T
-# jump SELF tloop
+run 200000
+
+clear
+next T
+jump SELF tloop

@@ -5,6 +5,8 @@ import sys
 from read_lmp_dump import read_file
 from read_lmp_log import read_log
 
+import ovito.io as ov
+
 
 def total_energy(df):
     Ep = df[['c_Ep']].to_numpy()
@@ -155,7 +157,7 @@ def displacement(df):
 
 
 def rdf(df):
-    a = a
+    kk = 1
 
 
 def main():
@@ -164,7 +166,8 @@ def main():
     # energy(df_log)
     # pressure(df_log, plot=True)
     # density(df_log, plot=True)
-    displacement(read_log())
+    # displacement()
+    rdf(df)
 
 
 if __name__ == '__main__':
