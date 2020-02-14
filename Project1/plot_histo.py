@@ -10,17 +10,18 @@ def f(v, T):
 
 
 def plot_histogram(v, v_arr, no_tsteps, no_atoms, no_bins, T=2.5):
-    for i in range(0, no_tsteps, no_tsteps // 6):
+    for i in range(0, no_tsteps, no_tsteps // 10):
         plt.hist(v_arr[i, :], bins=no_bins, density=True)
         plt.plot(v_arr[i, :], f(v_arr[i, :], T))
-        plt.title('Time: %0.1f' % (i / 1000))
+        plt.title(f'Time: {0.005 * i:.2f}')
+        print(i)
         plt.show()
 
-    v = np.sort(v)
+#     v = np.sort(v)
 
-    plt.hist(v, bins=no_bins, density=True)
-    plt.plot(v, f(v, T))
-    plt.show()
+#     plt.hist(v, bins=no_bins, density=True)
+#     plt.plot(v, f(v, T))
+#     plt.show()
 
 
 def histogram_time_evo(v, v_arr, no_bins):
@@ -35,7 +36,7 @@ def histogram_time_evo(v, v_arr, no_bins):
         hh = np.sum(h * hist_last)
         hist_list.append(hh / hist_last2)
 
-    x = np.linspace(0, 1, t_steps)
+    x = np.linspace(0, t_steps * 0.005, t_steps)
 
     plt.plot(x, hist_list, label='Hist. values')
     plt.plot(x, np.ones(t_steps), '--', label='Theoretical')
@@ -45,15 +46,9 @@ def histogram_time_evo(v, v_arr, no_bins):
     plt.show()
 
 
-def main():
-    if len(sys.argv) < 4:
-        print('State 1) filename from which to read data 2) number of timesteps and 3) number of atoms')
-        print('E.g. 1) dump.velocities 2) 1000 3) 4000')
-        exit()
-
-    filename = sys.argv[1]
-    no_tsteps = int(sys.argv[2])
-    no_atoms = int(sys.argv[3])
+def main(filename):
+    no_tsteps = 200
+    no_atoms = 4000
 
     df = read_file(filename)
 
@@ -70,4 +65,4 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+    main('dump.task_a')

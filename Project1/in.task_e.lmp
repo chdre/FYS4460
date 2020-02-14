@@ -1,0 +1,40 @@
+#3d Lennard
+label tloop
+label rloop
+
+variable rho index 0.001 0.005 0.01 0.05
+variable T index 1e-8 1 2.5 5 10
+
+units lj
+dimension 3
+boundary p p p
+atom_style atomic
+
+lattice fcc ${rho}
+region simbox block 0 10 0 10 0 10
+create_box 1 simbox
+create_atoms 1 box
+
+mass 1 1.0
+velocity all create ${T} 87287 dist uniform
+
+pair_style lj/cut 3.0
+pair_coeff 1 1 1.0 1.0 3.0
+
+fix f all nve
+
+# A log file for each T
+log log.T${T} append
+
+# dump 1 all custom 100 dump.PofT_${T} id type c_Ep c_Ek
+thermo 100
+thermo_style custom step temp press density
+run 20000
+
+clear
+next rho
+jump SELF rloop
+
+clear
+next T
+jump SELF tloop

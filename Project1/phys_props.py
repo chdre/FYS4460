@@ -61,23 +61,22 @@ def temperature_(df):
 
 
 def temperature(df):
-    for i in range(len(df)):
-        # Each timestep
-        dataframe = df[i]
-        T = dataframe[['Temp']].to_numpy()
-        dt = dataframe[['Dt']].to_numpy()[0]
+    # Each timestep
+    dataframe = df[i]
+    T = dataframe[['Temp']].to_numpy()
+    dt = dataframe[['Dt']].to_numpy()[0]
 
-        T = T[int(0.3 * len(T)):]    # System i equilibrium
+    T = T[int(0.3 * len(T)):]    # System i equilibrium
 
-        T_avg = np.sum(T) / len(T)
-        print(f'Average temperature: {T_avg}')
+    T_avg = np.sum(T) / len(T)
+    print(f'Average temperature: {T_avg}')
 
-        plt.plot(T, label='dt=' + str(dt[0]))
-        plt.title('Temperature')
-        plt.xlabel('Time t')
-        plt.ylabel('Temerature')
-        plt.legend()
-        plt.show()
+    plt.plot(T, label='dt=' + str(dt[0]))
+    plt.title('Temperature')
+    plt.xlabel('Time t')
+    plt.ylabel('Temerature')
+    plt.legend()
+    plt.show()
 
 
 def energy(df):
@@ -170,9 +169,11 @@ def rdf(filename):
         temp = np.fromstring(line, dtype=float, sep=' ')
         rdf_arr[i, :] = temp[2:]
 
-    plt.plot(rdf_arr[:, 1], rdf_arr[:, 0])
+    r, g = zip(*sorted(zip(rdf_arr[:, 1], rdf_arr[:, 0])))
+
+    plt.plot(r, g)
     plt.show()
-    print(rdf_arr)
+    # print(rdf_arr)
 
 
 def main():
@@ -182,7 +183,8 @@ def main():
     # pressure(df_log, plot=True)
     # density(df_log, plot=True)
     # displacement()
-    rdf('time_avg_rdf_T0.5.txt')
+    rdf('time_avg_rdf_T1e-8.txt')
+    rdf('time_avg_rdf_T2.5.txt')
 
 
 if __name__ == '__main__':
