@@ -4,8 +4,7 @@ import numpy as np
 import sys
 from read_lmp_dump import read_file
 from read_lmp_log import read_log
-
-import ovito.io as ov
+import re
 
 
 def total_energy(df):
@@ -160,16 +159,20 @@ def rdf(filename):
     with open(filename, 'r', newline='\n') as f_open:
         data = f_open.read()
 
+    data = re.sub(' +', ' ', data)
+
     lines = data.split('\n')
     lines = lines[105:-1]
 
     rdf_arr = np.zeros((len(lines), 2))
 
     for i, line in enumerate(lines):
-        print(line)
-        temp = np.fromstring(line[2:], dtype=float, sep=' ')
-        # print(temp)
-        rdf_arr[i, :] = temp
+        temp = np.fromstring(line, dtype=float, sep=' ')
+        rdf_arr[i, :] = temp[2:]
+
+    plt.plot(rdf_arr[:, 1], rdf_arr[:, 0])
+    plt.show()
+    print(rdf_arr)
 
 
 def main():
