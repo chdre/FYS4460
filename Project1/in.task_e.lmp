@@ -2,8 +2,8 @@
 label tloop
 label rloop
 
-variable rho index 0.001 0.005 0.01 0.05
-variable T index 1e-8 1 2.5 5 10
+variable rho index 0.001 0.0025 0.005 0.0075 0.01 0.025 0.05 0.075
+variable T index 1e-8 1.25 2.5 5 7.5 10 15 20
 
 units lj
 dimension 3
@@ -23,12 +23,10 @@ pair_coeff 1 1 1.0 1.0 3.0
 
 fix f all nve
 
-# A log file for each T
-log log.T${T} append
-
 # dump 1 all custom 100 dump.PofT_${T} id type c_Ep c_Ek
 thermo 100
 thermo_style custom step temp press density
+
 run 20000
 
 clear

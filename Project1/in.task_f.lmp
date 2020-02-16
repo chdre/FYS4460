@@ -19,7 +19,7 @@ velocity all create ${T} 87287 dist uniform
 pair_style lj/cut 3.0
 pair_coeff 1 1 1.0 1.0 3.0
 
-compute disp all displace/atom  # disp[4] = displacement, disp[1/2/3] = x,y,z
+compute disp all displace/atom
 compute msd all msd
 
 variable D equal slope(c_msd[4])
