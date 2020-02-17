@@ -20,18 +20,18 @@ pair_style lj/cut 3.0
 pair_coeff 1 1 1.0 1.0 3.0
 
 compute disp all displace/atom
-compute msd all msd
+compute myMSD all msd
 
-variable D equal slope(c_msd[4])
+variable D equal slope(c_myMSD[4])
 
 fix f all nve
 
 # dump 1 all custom 100 dump.displacement id type v_D
 
 thermo 100
-thermo_style custom step temp c_msd[4]
+thermo_style custom step temp c_myMSD[4] time
 
-run 200000
+run 100000
 
 clear
 next T
