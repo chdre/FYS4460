@@ -1,8 +1,8 @@
 # 3d Lennard
 label tloop
 
-variable T index 1e-8 2.5
-variable rho equal 0.01
+variable T equal 1.25
+variable rho index 0.01 1.1
 
 units lj
 dimension 3
@@ -24,13 +24,13 @@ pair_coeff 1 1 1.0 1.0 3.0
 compute myMSD all msd
 compute myRDF all rdf 100
 
-fix 2 all ave/time 1 20000 20000 c_myRDF[*] file time_avg_rdf_T${T}.txt mode vector
+fix 2 all ave/time 1 20000 20000 c_myRDF[*] file time_avg_rdf_rho${rho}.txt mode vector
 fix 1 all nve
 
-dump 1 all custom 100 dump.radial_dist_T${T} id type x y z vx vy vz
+dump 1 all custom 100 dump.radial_dist_rho${rho} id type x y z vx vy vz
 thermo 100
 
-thermo_style custom step temp press c_myMSD[4]
+thermo_style custom step temp press c_myMSD[4] time
 
 run 20000
 

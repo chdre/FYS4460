@@ -24,7 +24,7 @@ fix f all nve
 dump 1 all custom 100 dump.task_c_${mysize} id type x y z vx vy vz
 
 thermo 100
-thermo_style custom step dt temp xhi
+thermo_style custom step dt temp xhi time
 run 50000
 
 
