@@ -8,7 +8,7 @@ boundary        p p p
 atom_modify     sort 0 0.0
 
 # temperature
-variable myTemp index 1525.0 1550.0 1575.0 1600.0 1625.0 1650.0 1675.0 1700.0 1725.0 1750.0 1775.0 1800.0# 1900.0 2000.0
+variable myTemp index 1525.0 1550.0 1575.0# 1600.0 1625.0 1650.0 1675.0 1700.0 1725.0 1750.0 1775.0 1800.0# 1900.0 2000.0
 
 
 # diamond unit cell
@@ -55,13 +55,15 @@ fix             2 all temp/berendsen ${myTemp} ${myTemp} 1
 
 compute myMSD all msd
 
+# Equilibriate
+run 5000
+
 # Run simulation
 thermo          10
 thermo_style custom step temp c_myMSD[4] time
 
 dump 1 all custom 10 dump.Si_test_temp id type x y z vx vy vz
 run             10000
-
 
 clear
 next myTemp

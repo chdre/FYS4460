@@ -6,11 +6,11 @@ boundary        p p p
 atom_modify     sort 0 0.0
 
 # temperature
-variable myTemp equal 273.0
+variable myTemp equal 4000.0
 
 # diamond unit cell
 variable myL equal 4
-variable myscale equal 1.3
+variable myscale equal 1.0
 
 variable a equal 5.431*${myscale}
 lattice         custom $a               &
@@ -51,5 +51,5 @@ fix             2 all langevin ${myTemp} ${myTemp} 0.01 48278
 
 # Run simulation
 thermo          10
-dump 1 all custom 10 dump.Si_solid id type x y z vx vy vz
+dump 1 all custom 10 dump.Si_gas id type x y z vx vy vz
 run             1000

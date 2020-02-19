@@ -220,20 +220,20 @@ Step Temp Press TotEng Density c_myMSD[4] Time
    19800    2.4991976  0.024806163     3.687431         0.01    17126.433           99 
    19900     2.507675  0.024876069    3.6983643         0.01    17229.675         99.5 
    20000    2.5449825  0.025344553    3.7579555         0.01    17334.793          100 
-Loop time of 7.93921 on 4 procs for 20000 steps with 4000 atoms
+Loop time of 2.59653 on 4 procs for 20000 steps with 4000 atoms
 
-Performance: 1088268.941 tau/day, 2519.141 timesteps/s
-87.0% CPU use with 4 MPI tasks x 1 OpenMP threads
+Performance: 3327520.680 tau/day, 7702.594 timesteps/s
+96.4% CPU use with 4 MPI tasks x 1 OpenMP threads
 
 MPI task timing breakdown:
 Section |  min time  |  avg time  |  max time  |%varavg| %total
 ---------------------------------------------------------------
-Pair    | 0.6359     | 0.6583     | 0.67788    |   1.9 |  8.29
-Neigh   | 0.92177    | 0.96596    | 0.99654    |   2.8 | 12.17
-Comm    | 1.4294     | 1.4734     | 1.5174     |   2.8 | 18.56
-Output  | 2.4364     | 2.4636     | 2.5384     |   2.8 | 31.03
-Modify  | 2.2204     | 2.2496     | 2.2924     |   2.0 | 28.34
-Other   |            | 0.1284     |            |       |  1.62
+Pair    | 0.28085    | 0.28885    | 0.30778    |   2.0 | 11.12
+Neigh   | 0.43211    | 0.44362    | 0.4694     |   2.3 | 17.09
+Comm    | 0.32535    | 0.38696    | 0.41623    |   5.8 | 14.90
+Output  | 0.5937     | 0.59845    | 0.61258    |   1.1 | 23.05
+Modify  | 0.82373    | 0.8323     | 0.83664    |   0.6 | 32.05
+Other   |            | 0.04635    |            |       |  1.79
 
 Nlocal:    1000 ave 1020 max 983 min
 Histogram: 1 0 1 0 0 1 0 0 0 1
@@ -265,7 +265,7 @@ Created orthogonal box = (0 0 0) to (73.6806 73.6806 73.6806)
   1 by 2 by 2 MPI processor grid
 create_atoms 1 box
 Created 4000 atoms
-  create_atoms CPU = 0.000386 secs
+  create_atoms CPU = 0.000226974 secs
 
 mass 1 1.0
 
@@ -278,10 +278,7 @@ pair_coeff 1 1 1.0 1.0 3.0
 compute myMSD all msd
 compute myRDF all rdf 100
 
-fix 1 all nvt temp ${T} ${T} $(1.0 * 0.005)
-fix 1 all nvt temp 2.5 ${T} $(1.0 * 0.005)
-fix 1 all nvt temp 2.5 2.5 $(1.0 * 0.005)
-fix 1 all nvt temp 2.5 2.5 0.0050000000000000001041
+fix 1 all nve
 fix 2 all temp/berendsen ${T} ${T} 1.0
 fix 2 all temp/berendsen 2.5 ${T} 1.0
 fix 2 all temp/berendsen 2.5 2.5 1.0
