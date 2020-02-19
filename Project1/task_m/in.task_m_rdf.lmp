@@ -1,0 +1,38 @@
+label Tloop
+variable T index 200 325 400
+
+# ----------------- Init Section -----------------
+
+include "spce-water-system.in.init"
+
+
+# ----------------- Atom Definition Section -----------------
+
+read_data "spce-water-system.data"
+
+# ----------------- Settings Section -----------------
+
+include "spce-water-system.in.settings"
+
+
+# ----------------- Run Section -----------------
+
+timestep 1.0
+
+fix fxnpt all npt temp ${T} ${T} 100.0 iso 1.0 1.0 1000.0 drag 1.0
+
+# Equilibriate
+run 1000
+reset_timestep  0
+
+compute myRDF all rdf 200
+
+fix 2 all ave/time 1 1000 1000 c_myRDF[*] file time_avg_rdf_T${T}.txt mode vector
+
+dump 1 all custom 10 dump.spce_${T} id mol type x y z ix iy iz
+thermo 10
+run 1000
+
+clear
+next T
+jump SELF Tloop
