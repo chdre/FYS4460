@@ -1,0 +1,36 @@
+# 3d Lennard-Jones
+label sizeloop
+
+variable mysize index 5 10 15 20
+
+units lj
+dimension 3
+boundary p p p
+atom_style atomic
+
+lattice fcc 0.01
+region simbox block 0 ${mysize} 0 ${mysize} 0 ${mysize}
+create_box 1 simbox
+create_atoms 1 box
+
+mass 1 1.0
+velocity all create 2 87287 dist uniform
+
+pair_style lj/cut 3.0
+pair_coeff 1 1 1.0 1.0 3.0
+
+fix f all nve
+
+# Equilibriate
+thermo_style custom cpu
+run 10000
+reset_timestep 0
+
+thermo 100
+thermo_style custom step dt temp lx time
+run 50000
+
+
+clear
+next mysize
+jump SELF sizeloop
