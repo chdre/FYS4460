@@ -61,8 +61,8 @@ reset_timestep  0
 thermo          10
 thermo_style custom step temp c_myMSD[4] press etotal time
 
-dump 1 all custom 10 dump.Si_myL10 id type x y z vx vy vz
-run             5000
+dump 1 all custom 10 dump.Si id type x y z vx vy vz
+run             8000
 
 clear
 next myTemp

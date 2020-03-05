@@ -1,0 +1,33 @@
+#3d Lennard
+label tloop
+
+variable dt index 0.0100 0.0050 0.0010 0.0005
+variable steps index 10000 20000 100000 200000
+
+units lj
+dimension 3
+boundary p p p
+atom_style atomic
+
+lattice fcc 0.01
+region simbox block 0 10 0 10 0 10
+create_box 1 simbox
+create_atoms 1 box
+
+mass 1 1.0
+velocity all create 2.5 87287 dist uniform
+
+pair_style lj/cut 3.0
+pair_coeff 1 1 1.0 1.0 3.0
+
+fix f all nve
+
+timestep ${dt}
+thermo 100
+thermo_style custom step dt etotal time
+run ${steps}
+
+clear
+next dt
+next steps
+jump SELF tloop

@@ -220,20 +220,20 @@ Step Temp Press TotEng Density c_myMSD[4] Time
    19800    2.4991976  0.024806163     3.687431         0.01    17126.433           99 
    19900     2.507675  0.024876069    3.6983643         0.01    17229.675         99.5 
    20000    2.5449825  0.025344553    3.7579555         0.01    17334.793          100 
-Loop time of 6.99291 on 4 procs for 20000 steps with 4000 atoms
+Loop time of 3.09586 on 4 procs for 20000 steps with 4000 atoms
 
-Performance: 1235537.848 tau/day, 2860.041 timesteps/s
-88.7% CPU use with 4 MPI tasks x 1 OpenMP threads
+Performance: 2790820.861 tau/day, 6460.233 timesteps/s
+91.7% CPU use with 4 MPI tasks x 1 OpenMP threads
 
 MPI task timing breakdown:
 Section |  min time  |  avg time  |  max time  |%varavg| %total
 ---------------------------------------------------------------
-Pair    | 0.60643    | 0.62567    | 0.64427    |   1.7 |  8.95
-Neigh   | 0.88877    | 0.89877    | 0.90847    |   0.8 | 12.85
-Comm    | 1.1592     | 1.1893     | 1.2325     |   2.8 | 17.01
-Output  | 2.136      | 2.1518     | 2.1992     |   1.9 | 30.77
-Modify  | 1.9714     | 2.0143     | 2.071      |   2.8 | 28.80
-Other   |            | 0.1132     |            |       |  1.62
+Pair    | 0.28944    | 0.29346    | 0.29707    |   0.6 |  9.48
+Neigh   | 0.46604    | 0.47224    | 0.47997    |   0.8 | 15.25
+Comm    | 0.54976    | 0.56853    | 0.58767    |   1.8 | 18.36
+Output  | 0.70795    | 0.71354    | 0.73016    |   1.1 | 23.05
+Modify  | 0.95507    | 0.99164    | 1.025      |   2.6 | 32.03
+Other   |            | 0.05646    |            |       |  1.82
 
 Nlocal:    1000 ave 1020 max 983 min
 Histogram: 1 0 1 0 0 1 0 0 0 1
@@ -265,7 +265,7 @@ Created orthogonal box = (0 0 0) to (73.6806 73.6806 73.6806)
   1 by 2 by 2 MPI processor grid
 create_atoms 1 box
 Created 4000 atoms
-  create_atoms CPU = 0.000285864 secs
+  create_atoms CPU = 0.000227928 secs
 
 mass 1 1.0
 
