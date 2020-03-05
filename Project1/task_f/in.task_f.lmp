@@ -22,11 +22,12 @@ pair_coeff 1 1 1.0 1.0 3.0
 compute disp all displace/atom
 compute myMSD all msd
 
-variable D equal slope(c_myMSD[4])
-
 fix f all nve
 
-# dump 1 all custom 100 dump.displacement id type v_D
+# Equilibriate
+thermo_style custom cpu
+run 5000
+reset_timestep 0
 
 thermo 100
 thermo_style custom step temp c_myMSD[4] time

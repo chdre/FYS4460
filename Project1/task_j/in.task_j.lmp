@@ -1,3 +1,5 @@
+label sloop
+
 units           metal
 
 atom_style      atomic
@@ -6,11 +8,11 @@ boundary        p p p
 atom_modify     sort 0 0.0
 
 # temperature
-variable myTemp equal 4000.0
+variable myTemp equal 1200.0
 
 # diamond unit cell
 variable myL equal 4
-variable myscale equal 1.0
+variable myscale index 1.0 1.15 1.3
 
 variable a equal 5.431*${myscale}
 lattice         custom $a               &
@@ -47,9 +49,20 @@ neigh_modify    every 1 delay 10 check yes
 
 timestep        1.0e-3
 fix             1 all nve
-fix             2 all langevin ${myTemp} ${myTemp} 0.01 48278
+
+# Equilibriate
+thermo_style custom cpu
+run 5000
+reset_timestep 0
+
+compute myMSD all msd
 
 # Run simulation
+thermo_style custom step temp c_myMSD[4] time
 thermo          10
-dump 1 all custom 10 dump.Si_gas id type x y z vx vy vz
-run             1000
+dump 1 all custom 10 dump.Si_scale${myscale} id type x y z vx vy vz
+run             10000
+
+clear
+next myscale
+jump SELF sloop

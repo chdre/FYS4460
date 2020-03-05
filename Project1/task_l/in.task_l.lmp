@@ -8,12 +8,11 @@ boundary        p p p
 atom_modify     sort 0 0.0
 
 # temperature
-variable myTemp index 1525.0 1550.0 1575.0 1600.0 1625.0 1650.0 1675.0 1700.0 1725.0 1750.0 1775.0 1800.0# 1900.0 2000.0
-
+variable myTemp index   2300.0 2400.0 2450.0 2500.0 2550.0 2600.0 2650.0 2700.0
 
 # diamond unit cell
 variable myL equal 4
-variable myscale equal 1
+variable myscale equal 1.0
 
 variable a equal 5.431*${myscale}
 lattice         custom $a               &
@@ -49,24 +48,21 @@ neighbor        1.0 bin
 neigh_modify    every 1 delay 10 check yes
 
 timestep        1.0e-3
-fix             1 all nve#t temp ${myTemp} ${myTemp} $(100*1.0e-3)
-# fix             2 all langevin ${myTemp} ${myTemp} 0.1 48278
-fix             2 all temp/berendsen ${myTemp} ${myTemp} 1
+fix             1 all nvt temp ${myTemp} ${myTemp} $(100.0 * dt)
 
 compute         myMSD all msd
 
 # Equilibriate
 thermo_style    custom cpu  # To avoid reading
-run 5000
-
+run             5000
 reset_timestep  0
 
 # Run simulation
 thermo          10
-thermo_style custom step temp c_myMSD[4] time
+thermo_style custom step temp c_myMSD[4] press etotal time
 
-dump 1 all custom 10 dump.Si_test_temp id type x y z vx vy vz
-run             10000
+dump 1 all custom 10 dump.Si_myL10 id type x y z vx vy vz
+run             5000
 
 clear
 next myTemp

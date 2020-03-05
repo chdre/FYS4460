@@ -220,20 +220,20 @@ Step Temp Press TotEng Density c_myMSD[4] Time
    19800    2.5007931  0.024686333    3.6921356         0.01    17464.439           99 
    19900    2.4973806   0.02495614    3.6934794         0.01    17566.228         99.5 
    20000    2.5058009  0.024615187    3.6923756         0.01    17667.923          100 
-Loop time of 3.40509 on 4 procs for 20000 steps with 4000 atoms
+Loop time of 6.67396 on 4 procs for 20000 steps with 4000 atoms
 
-Performance: 2537375.310 tau/day, 5873.554 timesteps/s
-88.3% CPU use with 4 MPI tasks x 1 OpenMP threads
+Performance: 1294583.673 tau/day, 2996.721 timesteps/s
+89.1% CPU use with 4 MPI tasks x 1 OpenMP threads
 
 MPI task timing breakdown:
 Section |  min time  |  avg time  |  max time  |%varavg| %total
 ---------------------------------------------------------------
-Pair    | 0.29129    | 0.30053    | 0.31618    |   1.8 |  8.83
-Neigh   | 0.45909    | 0.47449    | 0.48488    |   1.5 | 13.93
-Comm    | 0.6468     | 0.69034    | 0.76471    |   5.4 | 20.27
-Output  | 0.85766    | 0.86933    | 0.88248    |   1.0 | 25.53
-Modify  | 0.98107    | 1.0258     | 1.0692     |   3.3 | 30.13
-Other   |            | 0.04458    |            |       |  1.31
+Pair    | 0.57909    | 0.61026    | 0.63291    |   3.0 |  9.14
+Neigh   | 0.87697    | 0.90387    | 0.9301     |   2.3 | 13.54
+Comm    | 1.1414     | 1.2026     | 1.2441     |   3.5 | 18.02
+Output  | 2.0269     | 2.0417     | 2.0859     |   1.8 | 30.59
+Modify  | 1.7765     | 1.8108     | 1.845      |   2.2 | 27.13
+Other   |            | 0.1048     |            |       |  1.57
 
 Nlocal:    1000 ave 1016 max 967 min
 Histogram: 1 0 0 0 0 0 0 1 0 2
@@ -246,4 +246,4 @@ Total # of neighbors = 2996
 Ave neighs/atom = 0.749
 Neighbor list builds = 2000
 Dangerous builds = 2000
-Total wall time: 0:00:06
+Total wall time: 0:00:13

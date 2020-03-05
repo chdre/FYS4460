@@ -1,0 +1,75 @@
+thermo 100
+run 1000
+Ewald initialization ...
+  using 12-bit tables for long-range coulomb (src/kspace.cpp:323)
+  G vector (1/distance) = 0.242448
+  estimated absolute RMS force accuracy = 0.0338832
+  estimated relative force accuracy = 0.000102038
+  KSpace vectors: actual max1d max3d = 1054 8 2456
+                  kxmax kymax kzmax  = 8 8 8
+Neighbor list info ...
+  update every 1 steps, delay 10 steps, check yes
+  max neighbors/atom: 2000, page size: 100000
+  master list distance cutoff = 12.35
+  ghost atom cutoff = 12.35
+  binsize = 6.175, bins = 6 6 6
+  2 neighbor lists, perpetual/occasional/extra = 1 1 0
+  (1) pair lj/cut/coul/long, perpetual
+      attributes: half, newton on
+      pair build: half/bin/newton
+      stencil: half/bin/3d/newton
+      bin: standard
+  (2) compute rdf, occasional, copy from (1)
+      attributes: half, newton on
+      pair build: copy
+      stencil: none
+      bin: none
+Per MPI rank memory allocation (min/avg/max) = 22.1 | 22.1 | 22.1 Mbytes
+Step Temp E_pair E_mol TotEng Press Volume 
+       0    621.84237   -3536.5851     875.4274    2897.7707    4596.9866    50774.154 
+     100    666.99549   -3387.0595    698.22118    3273.7341    3501.0132    52096.091 
+     200    691.53861   -3435.3949    858.96162    3605.5411    7168.7242    53404.288 
+     300    699.47036   -3300.0109    955.04422    3907.9132    5472.1682    54767.507 
+     400    724.53272   -3125.0356    833.76071    4185.6486    2666.7707    56114.337 
+     500    742.63422   -3066.4823    852.17436     4424.433    5097.8003    57460.678 
+     600    743.86924   -3005.3731    978.92686    4623.3352    5923.7153    58884.051 
+     700    765.55928   -2982.3604    936.65775    4797.9758    3265.7298    60331.686 
+     800    766.56697   -2879.7387    953.70753    4926.6554    3791.9368    61790.255 
+     900    766.59078   -2801.5495    998.28848    5049.6384    5221.7751    63343.493 
+    1000    759.63423   -2576.5737    937.53762    5151.6757    4175.4424     64841.63 
+Loop time of 29.3261 on 4 procs for 1000 steps with 3000 atoms
+
+Performance: 2.946 ns/day, 8.146 hours/ns, 34.099 timesteps/s
+92.4% CPU use with 4 MPI tasks x 1 OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 5.4977     | 5.6005     | 5.7413     |   4.1 | 19.10
+Bond    | 0.059084   | 0.061649   | 0.064548   |   0.8 |  0.21
+Kspace  | 13.752     | 13.952     | 14.07      |   3.5 | 47.57
+Neigh   | 0.96513    | 0.96981    | 0.97404    |   0.4 |  3.31
+Comm    | 1.4694     | 1.5171     | 1.566      |   2.8 |  5.17
+Output  | 0.69444    | 0.86772    | 0.97482    |  11.9 |  2.96
+Modify  | 6.2166     | 6.3237     | 6.4949     |   4.4 | 21.56
+Other   |            | 0.03395    |            |       |  0.12
+
+Nlocal:    750 ave 773 max 741 min
+Histogram: 3 0 0 0 0 0 0 0 0 1
+Nghost:    5313 ave 5379 max 5260 min
+Histogram: 1 1 0 0 0 0 1 0 0 1
+Neighs:    136795 ave 140987 max 134543 min
+Histogram: 2 0 0 1 0 0 0 0 0 1
+
+Total # of neighbors = 547179
+Ave neighs/atom = 182.393
+Ave special neighs/atom = 2
+Neighbor list builds = 98
+Dangerous builds = 79
+
+clear
+OMP_NUM_THREADS environment is not set. Defaulting to 1 thread. (src/comm.cpp:93)
+  using 1 OpenMP thread(s) per MPI task
+next T
+jump SELF Tloop
+Total wall time: 0:02:31
