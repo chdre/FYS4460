@@ -1,0 +1,7 @@
+
+clear
+OMP_NUM_THREADS environment is not set. Defaulting to 1 thread. (src/comm.cpp:93)
+  using 1 OpenMP thread(s) per MPI task
+next T
+jump SELF Tloop
+Total wall time: 0:02:10

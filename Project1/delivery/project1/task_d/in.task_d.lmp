@@ -1,0 +1,31 @@
+#3d Lennard
+label tloop
+
+variable T index 1 2 2.5 3 3.5 6 9 10 15
+
+units lj
+dimension 3
+boundary p p p
+atom_style atomic
+
+lattice fcc 0.01
+region simbox block 0 10 0 10 0 10
+create_box 1 simbox
+create_atoms 1 box
+
+mass 1 1.0
+velocity all create ${T} 87287 dist uniform
+
+pair_style lj/cut 3.0
+pair_coeff 1 1 1.0 1.0 3.0
+
+fix f all nve
+
+# dump 1 all custom 100 dump.PofT_${T} id type c_Ep c_Ek
+thermo 100
+thermo_style custom step dt temp press
+run 20000
+
+clear
+next T
+jump SELF tloop

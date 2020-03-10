@@ -1,0 +1,43 @@
+#3d Lennard
+label tloop
+label rloop
+
+variable rho index 0.0001 0.00025 0.0005 0.00075 0.001 0.0025 0.005 0.0075 0.01 0.025 0.05
+variable T index 1e-8 0.5 1 1.5 2 2.5 3 3.5 4 4.5 5
+
+units lj
+dimension 3
+boundary p p p
+atom_style atomic
+
+lattice fcc ${rho}
+region simbox block 0 10 0 10 0 10
+create_box 1 simbox
+create_atoms 1 box
+
+mass 1 1.0
+velocity all create ${T} 87287 dist uniform
+
+pair_style lj/cut 3.0
+pair_coeff 1 1 1.0 1.0 3.0
+
+fix f all nve
+
+# Equilibriate
+thermo_style custom cpu
+run 5000
+reset_timestep 0
+
+# dump 1 all custom 100 dump.PofT_${T} id type c_Ep c_Ek
+thermo 100
+thermo_style custom step temp press density
+
+run 20000
+
+clear
+next rho
+jump SELF rloop
+
+clear
+next T
+jump SELF tloop
