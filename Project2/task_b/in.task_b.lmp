@@ -1,13 +1,13 @@
 # 3d liquid lennard Jones
-variable dt equal 0.005
-variable T equal 0.851
-variable b equal 5.7e-10
-variable s equal 3.405e-10
-variable rho equal 4/$b^3*$s^3
-variable x equal 20
-variable y equal 20
-variable z equal 20
-variable radius equal 2e-9/$s/xlat
+variable    dt equal 0.005
+variable    T equal 0.851
+variable    b equal 5.7e-10
+variable    s equal 3.405e-10
+variable    rho equal 4/$b^3*$s^3
+variable    x equal 20
+variable    y equal 20
+variable    z equal 20
+variable    radius equal 2e-9/$s/xlat
 
 units       lj
 dimension   3
