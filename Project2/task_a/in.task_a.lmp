@@ -1,0 +1,35 @@
+# 3d liquid lennard Jones
+variable dt equal 0.0002
+variable T equal 0.851
+variable b equal 5.7e-10
+variable s equal 3.405e-10
+variable rho equal 4/$b^3*$s^3
+variable x equal 20
+variable y equal 20
+variable z equal 20
+
+units       lj
+dimension   3
+boundary    p p p
+atom_style  atomic
+
+lattice         fcc ${rho}
+region          simbox block 0 $x 0 $y 0 $z
+create_box      1 simbox
+create_atoms    1 box
+
+mass        1 1.0
+
+velocity    all create ${T} 42 dist uniform
+
+pair_style  lj/cut 3.0
+pair_coeff  1 1 1.0 1.0 3.0
+
+fix         fixnvt all nvt temp ${T} ${T} $(1.0 * dt)
+
+timestep        ${dt}
+
+thermo          10
+thermo_style    custom step temp press etotal time
+dump            1 all custom 10 dump.task_a id type x y z vx vy vz
+run             1000
