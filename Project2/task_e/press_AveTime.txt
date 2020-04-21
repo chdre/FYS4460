@@ -1,0 +1,10 @@
+# Time-averaged data for fix fixAveTime
+# TimeStep Number-of-rows
+# Row c_myPress[*]
+1000 6
+1 -116.983
+2 -116.421
+3 -114.961
+4 -55.8733
+5 -53.9849
+6 -53.78

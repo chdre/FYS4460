@@ -1,0 +1,82 @@
+# 3d liquid lennard Jones
+variable        dt equal 0.0005
+variable        T equal 0.851
+variable        b equal 5.72
+variable        s equal 3.405
+variable        rho equal (4/$b^3)*$s^3
+variable        x equal 20
+variable        y equal 20
+variable        z equal 20
+variable        N equal 10000
+
+
+units           lj
+dimension       3
+boundary        p p p
+
+atom_style      atomic
+
+lattice         fcc ${rho}
+region          simbox block 0 $x 0 $y 0 $z units lattice
+create_box      2 simbox
+create_atoms    1 box
+
+mass            * 1.0
+
+pair_style      lj/cut 1.12246
+pair_coeff      * * 1.0 1.0 1.12246
+
+timestep        ${dt}
+
+velocity        all create $T 42 dist uniform
+fix             fixnvt all nvt temp $T $T $(100.0*dt)
+
+# Relax system
+thermo          100
+thermo_style    custom temp
+run             2000
+
+label           tloop
+
+variable        n loop 10
+
+variable        r equal random(2,3,42)*1e-9/$s
+variable        xp equal random(0,$x,42)
+variable        yp equal random(0,$y,42)
+variable        zp equal random(0,$z,42)
+
+# Spherical pores
+region          p$n sphere ${xp} ${yp} ${zp} $r units box
+
+next            n
+jump            SELF tloop
+
+region          pore union 10 p1 p2 p3 p4 p5 p6 p7 p8 p9 p10
+
+group           flow region pore
+delete_atoms    porosity pore 0.5 42
+group           gbox region simbox
+group           outside_pore subtract gbox pore_group
+set             group pore_group type 2
+
+
+variable        countFlow equal count(flow)
+print           ${countFlow} file no_particles_flow.txt
+
+unfix           fixnvt
+fix             fixnvtFlow flow nvt temp $T $T $(100.0*dt)
+fix             fixForce flow addforce 0.1 0.0 0.0 region pore
+
+thermo          100
+thermo_style    custom temp
+run             2000
+reset_timestep  0
+
+
+unfix           fixnvtFlow
+fix             fixnve flow nve
+
+thermo          100
+thermo_style    custom step temp time
+dump            1 all atom dump.bin
+run             $N

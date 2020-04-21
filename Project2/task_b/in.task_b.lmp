@@ -7,7 +7,7 @@ variable    rho equal 4/$b^3*$s^3
 variable    x equal 20
 variable    y equal 20
 variable    z equal 20
-variable    radius equal 2e-9/$s/xlat
+variable    r equal 2e-9/$s/xlat
 
 units       lj
 dimension   3
@@ -20,7 +20,7 @@ create_box      2 simbox
 create_atoms    1 box
 
 # Cylindrical pore
-region          pore cylinder z $(20/2) $(20/2) ${radius} INF INF
+region          pore cylinder z $(20/2) $(20/2) ${r} INF INF
 
 # Three groups: 1) cylinder 2) whole box 3) whole box - cylinder
 group       pore_group region pore
