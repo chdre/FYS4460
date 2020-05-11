@@ -4,6 +4,7 @@ import scipy.ndimage as scpi
 import seaborn as sns
 import skimage.measure as skm
 from numba import njit
+from tqdm import tqdm
 
 
 def dens_span_cluster(p, Lx, Ly, N):
@@ -11,7 +12,7 @@ def dens_span_cluster(p, Lx, Ly, N):
     Arguments:
         L: Integer giving length of box, given in number of unit cells
         p: Array containing various probabilities for a site to be occupied
-        N: Integer deciding how many runs to calculate
+        N: Monte-Carlo simulations
     Returns:
         P: Probability for a site to belong to a spanning cluster
     """
@@ -37,8 +38,8 @@ def mass_cluster(p, Lx, Ly, N):
     """
     Arguments:
         L: Integer giving length of box, given in number of unit cells
-        p: Integer, probability for a site to be occupied
-        N: Integer deciding how many runs to calculate
+        p: Float, probability for a site to be occupied
+        N: Monte-Carlo simulations
     Returns:
         all_area: area of clusters, minus area of spanning clusters
     """
@@ -76,8 +77,8 @@ def mass_spanning_cluster2(p, L, N):
     """
     Arguments:
         L: Integer giving length of box, given in number of unit cells
-        p: Integer, probability for a site to be occupied
-        N: Integer deciding how many runs to calculate
+        p: Float, probability for a site to be occupied
+        N: Monte-Carlo simulations
     Returns:
         all_area: area of spanning cluster
     """
@@ -107,9 +108,9 @@ def mass_spanning_cluster2(p, L, N):
 def mass_spanning_cluster(p, L, N):
     """
     Arguments:
-        L: Integer giving length of box, given in number of unit cells
-        p: Integer, probability for a site to be occupied
-        N: Integer deciding how many runs to calculate
+        L: Array of integers giving length of box, given in number of unit cells
+        p: Float, probability for a site to be occupied
+        N: Monte-Carlo simulations
     Returns:
         all_area: area of spanning cluster
     """
@@ -137,6 +138,105 @@ def mass_spanning_cluster(p, L, N):
     M /= N
 
     return M
+
+
+def mass_singly_con(p, L, N, walk):
+    """
+    Arguments:
+        L: Array of integers giving length of box, given in number of unit cells
+        p: Float, probability for a site to be occupied
+        N: Monte-Carlo simulations
+    Returns:
+        M: mass of singly connected sites
+    """
+    M = np.zeros(len(L))
+
+    for i in tqdm(range(N)):
+        for j, l in enumerate(L):
+            perc = []
+            count = 0
+            percolating = True
+            while(len(perc) == 0):
+                domain = np.random.rand(l, l)
+                binary_domain = domain < p
+                label, num = scpi.measurements.label(binary_domain)
+
+                perc_x = np.intersect1d(label[0, :], label[-1, :])
+                perc = perc_x[np.where(perc_x > 0)]
+
+                count += 1
+                if count > 1000:
+                    print('No percolation')
+                    percolating = False
+                    break
+
+            if percolating:
+                labelList = np.arange(num + 1)
+                binary_perc_domain = (label == perc[0])
+                l, r = walk.walk(binary_perc_domain)
+
+                sc_domain = l * r
+                binary_sc_domain = sc_domain[np.where(sc_domain > 0)]
+                M[j] += binary_sc_domain.shape[0]
+
+            else:
+                N
+
+    M /= N
+
+    return M
+
+
+def dens_singly_con(p, L, N, walk):
+    """
+    Arguments:
+        L: Integers giving length of box, given in number of unit cells
+        p: Array of floats, probability for a site to be occupied
+        N: Monte-Carlo simulations
+    Returns:
+        all_area: area of singly connected sites
+    """
+    P = np.zeros(len(p))
+
+    for i in range(N):
+        for j, pi in enumerate(p):
+            perc = []
+            c = 0
+            percolating = True
+            while(len(perc) == 0):
+                domain = np.random.rand(L, L)
+                binary_domain = domain < pi
+                label, num = scpi.measurements.label(binary_domain)
+
+                perc_x = np.intersect1d(label[0, :], label[-1, :])
+                # perc_y = np.intersect1d(label[:, 0], label[:, -1])
+                perc = perc_x[np.where(perc_x > 0)]
+                # percy = perc_y[np.where(perc_y > 0)]
+
+                # if len(percx) > 0:
+                #     # print('percx')
+                #     perc = percx
+                # elif len(percy) > 0:
+                #     perc = percy
+                #     # print('percy')
+
+                c += 1
+                if c > 1000:
+                    print('No percolation')
+                    percolating = False
+                    break
+
+            if percolating:
+                binary_perc_domain = (label == perc[0])
+                l, r = walk.walk(binary_perc_domain)
+
+                sc_domain = l * r
+                binary_sc_domain = sc_domain[np.where(sc_domain > 0)]
+                P[j] += binary_sc_domain.shape[0]
+
+    P /= N * L * L
+
+    return P
 
 
 def DensSpanClusterAltGeo(p, Lx, Ly, N):
