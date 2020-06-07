@@ -19,8 +19,9 @@ region          simbox block 0 $x 0 $y 0 $z
 create_box      2 simbox
 create_atoms    1 box
 
+
 # Cylindrical pore
-region          pore cylinder z $(20/2) $(20/2) ${r} INF INF
+region          pore cylinder z $(20/2) $(20/2) ${r} INF INF 
 
 # Three groups: 1) cylinder 2) whole box 3) whole box - cylinder
 group       pore_group region pore
@@ -36,11 +37,20 @@ velocity    all create ${T} 42 dist uniform
 pair_style  lj/cut 3.0
 pair_coeff  * * 1.0 1.0 3.0
 
-fix         fixnvt pore_group nvt temp ${T} ${T} $(1.0*dt)
-
 timestep    ${dt}
-
 thermo          10
 thermo_style    custom step temp press etotal time
+
+fix         fixnvt1 all nvt temp $T $T $(100.0*dt)
+run         2000
+unfix       fixnvt1
+fix         fixnve all nve
+run         1000
+unfix       fixnve
+
+fix         fixnvt pore_group nve#t temp ${T} ${T} $(1.0*dt)
+
 dump            1 all custom 10 dump.task_b id type x y z vx vy vz
 run             1000
+variable    porosity equal count(pore_group)/count(all)
+print       'Porosity: ${porosity}'
