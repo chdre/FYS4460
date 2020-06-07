@@ -42,13 +42,13 @@ region      p${n} sphere ${xp} ${yp} ${zp} ${r}
 next        n
 jump        SELF tloop
 
-region      pore union 20   p1 p2 p3 p4 p5 p6 p7 p8 p9 p10 p11 p12 &
+region      matrix union 20   p1 p2 p3 p4 p5 p6 p7 p8 p9 p10 p11 p12 &
                             p13 p14 p15 p16 p17 p18 p19 p20
 
 # Three groups: 1) cylinder 2) whole box 3) whole box - cylinder
-group       pore_group region pore
+group       matrix_group region matrix
 group       gbox region simbox
-group       outside_pore subtract gbox pore_group
+group       pore_group subtract gbox matrix_group
 set         group pore_group type 2
 
 fix         fixnvt pore_group nvt temp ${T} ${T} $(1.0*dt)
