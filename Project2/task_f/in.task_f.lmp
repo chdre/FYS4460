@@ -27,12 +27,14 @@ velocity    all create ${T} 42 dist uniform
 pair_style  lj/cut 3.0
 pair_coeff  * * 1.0 1.0 3.0
 
-fix             fixnvt all nvt temp ${T} ${T} $(1.0*dt)
+fix             fixnvt all nvt temp ${T} ${T} $(100.0*dt)
 
 # Thermalize
 thermo_style    custom cpu
-run             500
+run             2000
 reset_timestep  0
+
+unfix       fixnvt
 
 label       tloop
 
@@ -49,13 +51,15 @@ region      p${n} sphere ${xp} ${yp} ${zp} ${r}
 next        n
 jump        SELF tloop
 
+# Relax
+fix         fixnve all nve
 # Equilibriate
 thermo_style    custom cpu
-run             500
+run             1000
 reset_timestep  0
 
 # Remove thermalization
-unfix       fixnvt
+unfix       fixnve
 
 region      pore union 20   p1 p2 p3 p4 p5 p6 p7 p8 p9 p10 p11 p12 &
                             p13 p14 p15 p16 p17 p18 p19 p20

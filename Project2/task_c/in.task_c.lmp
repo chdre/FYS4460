@@ -51,7 +51,18 @@ group       gbox region simbox
 group       pore_group subtract gbox matrix_group
 set         group pore_group type 2
 
-fix         fixnvt pore_group nvt temp ${T} ${T} $(1.0*dt)
+thermo          10
+thermo_style    custom step temp press etotal time
+
+fix         fixnvt all nvt temp $T $T $(100.0*dt)
+run         2000
+unfix       fixnvt
+
+fix         fixnve all nve
+run         1000
+unfix       fixnve
+
+fix         fixnve2 pore_group nve#t temp ${T} ${T} $(1.0*dt)
 
 thermo          10
 thermo_style    custom step temp press etotal time
