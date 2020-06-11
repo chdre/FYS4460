@@ -19,7 +19,7 @@ ncount = 0
 perc = []
 while(len(perc) == 0):
     ncount = ncount + 1
-    if (ncount >1000):
+    if (ncount > 1000):
         print("Couldn't make percolation cluster...")
         break
 
@@ -38,28 +38,30 @@ if len(perc) > 0:
 
     # zz now contains the spanning cluster
     figure()
-    imshow(zz, interpolation='nearest', origin='upper') # Display spanning cluster
+    # Display spanning cluster
+    imshow(zz, interpolation='nearest', origin='upper')
     savefig("current.pdf")
-    #show()
-    #% Run walk on this cluster
-    l,r = walk(zz)
+    # show()
+    # % Run walk on this cluster
+    l, r = walk(zz)
     figure()
     imshow(l, interpolation='nearest', origin='upper')
     figure()
     imshow(r, interpolation='nearest', origin='upper')
 
-    zzz = l*r # Find points where both l and r are non-zero
+    zzz = l * r  # Find points where both l and r are non-zero
     figure()
-    imshow(zzz, interpolation='nearest', origin='upper') # Singly connected sites
+    # Singly connected sites
+    imshow(zzz, interpolation='nearest', origin='upper')
     colorbar()
 
     zadd = zz + zzz
     #
-    #%subplot(2,2,1), imagesc(zz)
-    #%subplot(2,2,2),
+    # %subplot(2,2,1), imagesc(zz)
+    # %subplot(2,2,2),
     figure()
     imshow(zadd, interpolation='nearest', origin='upper')
     colorbar()
-    #%subplot(2,2,3), imagesc(zzz>0)
-    #%subplot(2,2,4), imagesc(l+r>0)
+    # %subplot(2,2,3), imagesc(zzz>0)
+    # %subplot(2,2,4), imagesc(l+r>0)
     show()
